@@ -30,4 +30,3 @@ function hbwc_prize_init() {
 add_action( 'plugins_loaded', 'hbwc_prize_init' );
 
 ?>
-
