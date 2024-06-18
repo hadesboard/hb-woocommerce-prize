@@ -41,6 +41,9 @@ class HBWC_Prize {
         // Initialize CPT and metaboxes.
         HBWC_CPT::instance();
         HBWC_Metaboxes::instance();
+
+        // Add template loader.
+        add_filter( 'template_include', array( $this, 'load_prize_templates' ) );
     }
 
     /**
@@ -58,7 +61,18 @@ class HBWC_Prize {
         wp_enqueue_script( 'hbwc-prize-scripts', plugins_url( '../assets/js/hbwc-prize-scripts.js', __FILE__ ), array( 'jquery' ), HBWC_PRIZE_VERSION, true );
     }
 
-    // Add other plugin methods and functionality here.
+    /**
+     * Load custom archive template for Prize post type.
+     */
+    public function load_prize_templates( $template ) {
+        if ( is_singular( 'prize' ) ) {
+            $template = HBWC_PRIZE_PLUGIN_DIR . 'templates/single-prize.php';
+        } elseif ( is_post_type_archive( 'prize' ) ) {
+            $template = HBWC_PRIZE_PLUGIN_DIR . 'templates/archive-prize.php';
+        }
+        return $template;
+    }
+
 }
 
 ?>
