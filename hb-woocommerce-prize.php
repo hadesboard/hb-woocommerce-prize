@@ -14,19 +14,18 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-// Define plugin constants.
+// Define constants
 define( 'HBWC_PRIZE_VERSION', '1.0.0' );
 define( 'HBWC_PRIZE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'HBWC_PRIZE_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
 
-// Include the main class file.
+// Include the main class
 include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-prize.php';
 
-// Initialize the plugin.
+// Initialize the plugin
 function hbwc_prize_init() {
-    return HBWC_Prize::instance();
+    new HBWC_Prize();
 }
-
-// Hook into plugins_loaded to initialize the plugin.
 add_action( 'plugins_loaded', 'hbwc_prize_init' );
 
 ?>

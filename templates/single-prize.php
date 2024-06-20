@@ -18,7 +18,7 @@ get_header();
                     <div class="hbwc-prize-description">
                         <?php the_content(); ?>
                     </div>
-                    <a href="#" class="hbwc-get-prize"><?php esc_html_e( 'Get Prize', 'hb-woocommerce-prize' ); ?></a>
+                    <a href="#" class="hbwc-get-prize" data-prize-id="<?php the_ID(); ?>"><?php esc_html_e( 'Get Prize', 'hb-woocommerce-prize' ); ?></a>
                 </div>
                 <div class="hbwc-prize-image">
                     <?php if ( has_post_thumbnail() ) : ?>

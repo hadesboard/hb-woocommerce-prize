@@ -5,64 +5,53 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class HBWC_Prize {
 
-    /**
-     * The single instance of the class.
-     */
-    protected static $_instance = null;
-
-    /**
-     * Main HBWC_Prize Instance.
-     *
-     * Ensures only one instance of HBWC_Prize is loaded or can be loaded.
-     *
-     * @return HBWC_Prize - Main instance.
-     */
-    public static function instance() {
-        if ( is_null( self::$_instance ) ) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    }
-
-    /**
-     * HBWC_Prize Constructor.
-     */
     public function __construct() {
-        // Load plugin text domain.
+        // Load plugin text domain
         add_action( 'init', array( $this, 'load_textdomain' ) );
 
-        // Enqueue scripts and styles.
+        // Enqueue scripts and styles
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-        // Include CPT and metaboxes.
-        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-cpt.php';
-        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-metaboxes.php';
-
-        // Initialize CPT and metaboxes.
-        HBWC_CPT::instance();
-        HBWC_Metaboxes::instance();
+        // Includes
+        $this->includes();
 
         // Add template loader.
         add_filter( 'template_include', array( $this, 'load_prize_templates' ) );
     }
 
-    /**
-     * Load plugin text domain for translations.
-     */
     public function load_textdomain() {
-        load_plugin_textdomain( 'hb-woocommerce-prize', false, dirname( plugin_basename( __FILE__ ) ) . '/../languages/' );
+        load_plugin_textdomain( 'hb-woocommerce-prize', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
     }
 
-    /**
-     * Enqueue plugin scripts and styles.
-     */
     public function enqueue_scripts() {
-        wp_enqueue_style( 'hbwc-prize-styles', plugins_url( '../assets/css/hbwc-prize-styles.css', __FILE__ ), array(), HBWC_PRIZE_VERSION );
-        wp_enqueue_script( 'hbwc-prize-scripts', plugins_url( '../assets/js/hbwc-prize-scripts.js', __FILE__ ), array( 'jquery' ), HBWC_PRIZE_VERSION, true );
+        wp_enqueue_style( 'hbwc-prize-styles', HBWC_PRIZE_PLUGIN_URI . 'assets/css/hbwc-prize-styles.css', array(), HBWC_PRIZE_VERSION );
+        wp_enqueue_script( 'hbwc-prize-scripts', HBWC_PRIZE_PLUGIN_URI . 'assets/js/hbwc-prize-scripts.js', array( 'jquery' ), HBWC_PRIZE_VERSION, true );
+        wp_localize_script( 'hbwc-prize-scripts', 'hbwc_ajax', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+    }
+
+    public function includes() {
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-cpt.php';
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-metaboxes.php';
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-user-meta.php';
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-order-handler.php';
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-settings.php';
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-prize-claim.php';
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-account-tab.php';
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-prize-orders.php';
+
+        // Instantiate classes
+        new HBWC_CPT();
+        new HBWC_Metaboxes();
+        new HBWC_User_Meta();
+        new HBWC_Order_Handler();
+        new HBWC_Settings();
+        new HBWC_Prize_Claim();
+        new HBWC_Account_Tab();
+        new HBWC_Prize_Orders();
     }
 
     /**
-     * Load custom archive template for Prize post type.
+     * Load custom templates for Prize post type.
      */
     public function load_prize_templates( $template ) {
         if ( is_singular( 'prize' ) ) {
@@ -72,7 +61,5 @@ class HBWC_Prize {
         }
         return $template;
     }
-
+    
 }
-
-?>
