@@ -50,6 +50,13 @@ class HBWC_Prize_Claim {
             update_post_meta( $order_id, '_prize_id', $prize_id );
             update_post_meta( $order_id, '_user_id', $user_id );
             update_post_meta( $order_id, '_prize_order_status', 'in_progress' );
+            
+            // Add the user's nickname if it exists, otherwise use the username
+            $nickname = get_user_meta( $user_id, 'nickname', true );
+            $username = $user->user_login;
+            $name_to_use = !empty( $nickname ) ? $nickname : $username;
+            update_post_meta( $order_id, '_user_nickname_or_username', $name_to_use );
+
             // Optionally reduce the user's score
             $user_score = get_user_meta( $user_id, 'user_score', true );
             $prize_score = get_post_meta( $prize_id, '_prize_score', true );
