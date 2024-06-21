@@ -1,33 +1,37 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly.
-}
-
 get_header();
-?>
 
-<div class="hbwc-prize-single">
-    <div class="hbwc-container">
-        <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-            <div class="hbwc-prize-content">
-                <div class="hbwc-prize-info">
-                    <h1 class="hbwc-prize-title"><?php the_title(); ?></h1>
-                    <div class="hbwc-prize-score">
-                        <?php esc_html_e( 'Score Needed: ', 'hb-woocommerce-prize' ); ?><?php echo get_post_meta( get_the_ID(), '_prize_score', true ); ?>
-                    </div>
-                    <div class="hbwc-prize-description">
-                        <?php the_content(); ?>
-                    </div>
-                    <a href="#" class="hbwc-get-prize" data-prize-id="<?php the_ID(); ?>"><?php esc_html_e( 'Get Prize', 'hb-woocommerce-prize' ); ?></a>
-                </div>
-                <div class="hbwc-prize-image">
-                    <?php if ( has_post_thumbnail() ) : ?>
-                        <?php the_post_thumbnail( 'large' ); ?>
-                    <?php endif; ?>
-                </div>
+while ( have_posts() ) : the_post();
+    $prize_score = get_post_meta( get_the_ID(), '_prize_score', true );
+    $user_id = get_current_user_id();
+    $user_score = get_user_meta( $user_id, 'user_score', true );
+    $can_claim = $user_score >= $prize_score;
+    ?>
+    <div id="prize-<?php the_ID(); ?>" <?php post_class(); ?>>
+        <div class="prize-details">
+            <div class="prize-description">
+                <h1><?php the_title(); ?></h1>
+                <?php the_content(); ?>
+                <p><strong><?php _e( 'Prize Score:', 'hb-woocommerce-prize' ); ?></strong> <?php echo esc_html( $prize_score ); ?></p>
+                <?php if ( $can_claim ) : ?>
+                    <form method="post" action="">
+                        <input type="hidden" name="prize_id" value="<?php echo esc_attr( get_the_ID() ); ?>">
+                        <input type="hidden" name="action" value="claim_prize">
+                        <?php wp_nonce_field( 'claim_prize_action', 'claim_prize_nonce' ); ?>
+                        <input type="submit" class="btn-claim-prize" value="<?php _e( 'Get Prize', 'hb-woocommerce-prize' ); ?>">
+                    </form>
+                <?php else : ?>
+                    <p><?php _e( 'You do not have enough score to claim this prize.', 'hb-woocommerce-prize' ); ?></p>
+                <?php endif; ?>
             </div>
-        <?php endwhile; endif; ?>
+            <div class="prize-image">
+                <?php if ( has_post_thumbnail() ) : ?>
+                    <?php the_post_thumbnail(); ?>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
-</div>
+    <?php
+endwhile;
 
-<?php get_footer(); ?>
+get_footer();
