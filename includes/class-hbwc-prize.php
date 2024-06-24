@@ -39,6 +39,7 @@ class HBWC_Prize {
         include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-account-tab.php';
         include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-prize-orders.php';
         include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-shortcodes.php';
+        include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-free-shipping.php';
 
         // Instantiate classes
         new HBWC_CPT();
@@ -50,6 +51,7 @@ class HBWC_Prize {
         new HBWC_Account_Tab();
         new HBWC_Prize_Orders();
         new HBWC_Shortcodes();
+        new HBWC_Free_Shipping();
     }
 
     /**

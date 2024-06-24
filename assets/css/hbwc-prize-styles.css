@@ -188,3 +188,25 @@
 .hbwc-back-link:hover {
   background-color: #005a87;
 }
+
+/* CSS styles for the shipping checkbox section */
+
+.shipping-checkbox {
+  background-color: #f2f2f2;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.shipping-checkbox h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.shipping-checkbox p {
+  font-size: 1.1em;
+}
+
+.shipping-checkbox input[type="checkbox"] {
+  margin-left: 10px;
+}

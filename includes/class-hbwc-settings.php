@@ -24,6 +24,8 @@ class HBWC_Settings {
     public function register_settings() {
         register_setting( 'hbwc_prize_settings_group', 'hbwc_conversion_rate' );
         register_setting( 'hbwc_prize_settings_group', 'hbwc_points_per_rate' );
+        register_setting( 'hbwc_prize_settings_group', 'hbwc_free_shipping_enabled' );
+        register_setting( 'hbwc_prize_settings_group', 'hbwc_free_shipping_score_threshold' );
     }
 
     public function render_settings_page() {
@@ -41,6 +43,16 @@ class HBWC_Settings {
                     <tr valign="top">
                         <th scope="row"><?php _e( 'Points per Rate', 'hb-woocommerce-prize' ); ?></th>
                         <td><input type="number" name="hbwc_points_per_rate" value="<?php echo esc_attr( get_option( 'hbwc_points_per_rate', 10 ) ); ?>" /></td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row"><?php _e( 'Enable Free Shipping Based on Score', 'hb-woocommerce-prize' ); ?></th>
+                        <td>
+                            <input type="checkbox" name="hbwc_free_shipping_enabled" value="yes" <?php checked( get_option( 'hbwc_free_shipping_enabled', 'no' ), 'yes' ); ?> />
+                        </td>
+                    </tr>
+                    <tr valign="top">
+                        <th scope="row"><?php _e( 'Score Threshold for Free Shipping', 'hb-woocommerce-prize' ); ?></th>
+                        <td><input type="number" name="hbwc_free_shipping_score_threshold" value="<?php echo esc_attr( get_option( 'hbwc_free_shipping_score_threshold', 100 ) ); ?>" /></td>
                     </tr>
                 </table>
                 <?php submit_button(); ?>
