@@ -25,6 +25,7 @@ include_once HBWC_PRIZE_PLUGIN_DIR . 'includes/class-hbwc-prize.php';
 // Initialize the plugin
 function hbwc_prize_init() {
     new HBWC_Prize();
+    load_plugin_textdomain( 'hb-woocommerce-prize', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'hbwc_prize_init' );
 
